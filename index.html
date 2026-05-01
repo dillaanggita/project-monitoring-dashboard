@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Project Monitoring Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background: white;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #333;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Project Monitoring Dashboard</h1>
+<table id="table">
+  <thead></thead>
+  <tbody></tbody>
+</table>
+
+<script>
+const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSUyXm7vNZVASoAA8-Xbc5Dfkdn75e5UfShXsUuE5Zi_rhZtB4WiiAPWHhwU3S0BINS7Ak3cxqUpXOx/pub?gid=1502631151&single=true&output=csv"; // ganti ini
+
+fetch(csvUrl)
+  .then(res => res.text())
+  .then(text => {
+    const rows = text.trim().split("\n").map(r => r.split(","));
+
+    const thead = document.querySelector("#table thead");
+    const tbody = document.querySelector("#table tbody");
+
+    // header
+    thead.innerHTML = "<tr>" + rows[0].map(h => `<th>${h}</th>`).join("") + "</tr>";
+
+    // body
+    tbody.innerHTML = rows.slice(1).map(row =>
+      "<tr>" + row.map(cell => `<td>${cell}</td>`).join("") + "</tr>"
+    ).join("");
+  })
+  .catch(() => {
+    document.body.innerHTML = "<h2>Error load data</h2>";
+  });
+</script>
+
+</body>
+</html>
